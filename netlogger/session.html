@@ -1,1 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Active Net Session | BACN</title>
 
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/auth.js" defer></script>
+  <script src="../assets/js/netlogger.js" defer></script>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">BACN</span>
+        <span class="brand-text">Backup Auxiliary Communications Network</span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Open navigation">☰</button>
+
+      <nav class="site-nav" id="siteNav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="session.html" class="active">Active Session</a>
+        <a href="export.html">Export</a>
+        <button class="nav-logout" id="logoutBtn" type="button">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="logger-main">
+    <section class="container logger-header">
+      <div>
+        <div class="eyebrow">Active Net</div>
+        <h1>BACN Net Session</h1>
+        <p id="sessionMeta">
+          KG5DPK Repeater • 443.475 MHz • Shinall Mountain WLR
+        </p>
+      </div>
+
+      <div class="session-actions">
+        <button class="button button-secondary" id="clearSessionBtn" type="button">Clear Local Log</button>
+        <a href="export.html" class="button">Export Log</a>
+      </div>
+    </section>
+
+    <section class="container session-layout">
+      <article class="logger-panel">
+        <h2>Add Check-In</h2>
+
+        <form id="checkinForm" class="logger-form compact">
+          <label for="callsign">Callsign</label>
+          <input id="callsign" name="callsign" type="text" placeholder="Example: KG5ABC" required />
+
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Example: Aaron" />
+
+          <label for="location">Location</label>
+          <input id="location" name="location" type="text" placeholder="Example: Little Rock" />
+
+          <label for="traffic">Traffic</label>
+          <select id="traffic" name="traffic">
+            <option value="No traffic">No traffic</option>
+            <option value="Has traffic">Has traffic</option>
+            <option value="Comment">Comment</option>
+            <option value="Emergency traffic">Emergency traffic</option>
+          </select>
+
+          <label for="notes">Notes</label>
+          <textarea id="notes" name="notes" rows="4" placeholder="Optional notes"></textarea>
+
+          <button class="button full-width" type="submit">Add Check-In</button>
+        </form>
+
+        <div id="checkinStatus" class="logger-status" aria-live="polite"></div>
+      </article>
+
+      <article class="logger-panel checkin-panel">
+        <div class="panel-title-row">
+          <div>
+            <h2>Check-Ins</h2>
+            <p><span id="checkinCount">0</span> logged</p>
+          </div>
+
+          <button class="small-button" id="copyLogBtn" type="button">Copy</button>
+        </div>
+
+        <div class="checkin-table-wrap">
+          <table class="checkin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Time</th>
+                <th>Callsign</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Traffic</th>
+                <th>Notes</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="checkinRows">
+              <tr>
+                <td colspan="8" class="empty-table">No check-ins logged yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
