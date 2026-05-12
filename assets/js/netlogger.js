@@ -460,8 +460,8 @@ function setupSessionPage() {
     const bounds = L.latLngBounds(boundsPoints);
 
     map.fitBounds(bounds, {
-      padding: [40, 40],
-      maxZoom: 8
+      padding: [70, 70],
+      maxZoom: 7
     });
   } else {
     map.setView([BACN_REPEATER.lat, BACN_REPEATER.lng], 8);
