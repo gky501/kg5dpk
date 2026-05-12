@@ -530,3 +530,245 @@ a:hover {
     text-align: left;
   }
 }
+
+/* ================================
+   BACN Net Logger
+================================ */
+
+.logger-page,
+.logger-main {
+  min-height: calc(100vh - 76px);
+  background:
+    radial-gradient(circle at top right, rgba(244, 123, 32, 0.16), transparent 32%),
+    #090909;
+}
+
+.logger-login-wrap {
+  width: min(calc(100% - 2rem), 980px);
+  margin: 0 auto;
+  padding: 4rem 0;
+  display: grid;
+  grid-template-columns: 1fr 0.85fr;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.login-card,
+.login-side-card,
+.logger-panel {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015)),
+    var(--charcoal);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.login-card,
+.login-side-card,
+.logger-panel {
+  padding: 1.5rem;
+}
+
+.login-card h1,
+.logger-header h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+}
+
+.login-card p,
+.logger-header p,
+.logger-panel p {
+  color: var(--soft-gray);
+}
+
+.logger-form {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1.4rem;
+}
+
+.logger-form.compact {
+  margin-top: 1rem;
+}
+
+.logger-form label {
+  font-weight: 900;
+  color: var(--white);
+}
+
+.logger-form input,
+.logger-form select,
+.logger-form textarea,
+.export-box {
+  width: 100%;
+  background: #0f0f0f;
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  padding: 0.85rem;
+  font: inherit;
+}
+
+.logger-form input:focus,
+.logger-form select:focus,
+.logger-form textarea:focus,
+.export-box:focus {
+  outline: 2px solid rgba(244, 123, 32, 0.5);
+  border-color: var(--orange);
+}
+
+.logger-status {
+  min-height: 1.4rem;
+  margin-top: 1rem;
+  font-weight: 800;
+}
+
+.logger-status.ok {
+  color: #73e098;
+}
+
+.logger-status.error {
+  color: #ff7777;
+}
+
+.small-note {
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.logger-header {
+  padding: 3rem 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.logger-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  padding-bottom: 3rem;
+}
+
+.logger-panel.wide {
+  grid-column: 1 / -1;
+}
+
+.panel-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.panel-title-row h2,
+.logger-panel h2 {
+  margin-top: 0;
+}
+
+.session-list {
+  margin-top: 1rem;
+}
+
+.empty-state,
+.empty-table {
+  color: var(--soft-gray);
+  background: rgba(255, 255, 255, 0.035);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.session-layout {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 1.25rem;
+  padding-bottom: 3rem;
+}
+
+.session-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.checkin-panel {
+  min-width: 0;
+}
+
+.checkin-table-wrap {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.checkin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 850px;
+}
+
+.checkin-table th,
+.checkin-table td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  vertical-align: top;
+}
+
+.checkin-table th {
+  color: var(--orange);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.small-button,
+.delete-checkin,
+.nav-logout {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  padding: 0.55rem 0.8rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.small-button:hover,
+.delete-checkin:hover,
+.nav-logout:hover {
+  background: rgba(244, 123, 32, 0.18);
+  border-color: var(--orange);
+}
+
+.nav-logout {
+  font: inherit;
+}
+
+.export-box {
+  min-height: 420px;
+  resize: vertical;
+  margin-top: 1rem;
+  white-space: pre;
+}
+
+@media (max-width: 900px) {
+  .logger-login-wrap,
+  .logger-grid,
+  .session-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .logger-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .session-actions,
+  .session-actions .button {
+    width: 100%;
+  }
+}
