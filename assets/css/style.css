@@ -894,12 +894,12 @@ a:hover {
 
 .checkin-map {
   display: block !important;
-  height: 420px !important;
+  height: 800px !important;
   width: 100% !important;
   border-radius: 14px;
   overflow: hidden;
   margin-top: 1rem;
-  background: #0f0f0f;
+  background: #000;
   border: 1px solid rgba(255, 255, 255, 0.09);
 }
 
