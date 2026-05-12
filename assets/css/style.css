@@ -793,3 +793,15 @@ a:hover {
     align-items: stretch;
   }
 }
+
+.lookup-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+}
+
+@media (max-width: 620px) {
+  .lookup-row {
+    grid-template-columns: 1fr;
+  }
+}
