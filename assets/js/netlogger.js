@@ -705,38 +705,35 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 function getArkansasCoordinates(location) {
+  const townCoords = typeof getArkansasTownCoordinates === "function"
+    ? getArkansasTownCoordinates(location)
+    : null;
+
+  if (townCoords) {
+    return townCoords;
+  }
+
+  // Backup fallback list for common non-city wording.
   const key = String(location || "")
     .trim()
     .toLowerCase()
     .replace(/,\s*arkansas/g, "")
-    .replace(/,\s*ar/g, "");
+    .replace(/,\s*ar/g, "")
+    .replace(/\barkansas\b/g, "")
+    .replace(/\bar\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
-  const places = {
-    "little rock": { lat: 34.7465, lng: -92.2896 },
-    "north little rock": { lat: 34.7695, lng: -92.2671 },
-    "jacksonville": { lat: 34.8662, lng: -92.1101 },
-    "sherwood": { lat: 34.8151, lng: -92.2243 },
-    "maumelle": { lat: 34.8668, lng: -92.4043 },
-    "conway": { lat: 35.0887, lng: -92.4421 },
-    "benton": { lat: 34.5645, lng: -92.5868 },
-    "bryant": { lat: 34.5959, lng: -92.4890 },
-    "cabot": { lat: 34.9745, lng: -92.0165 },
-    "lonoke": { lat: 34.7831, lng: -91.8999 },
-    "sheridan": { lat: 34.3070, lng: -92.4013 },
-    "hot springs": { lat: 34.5037, lng: -93.0552 },
-    "pine bluff": { lat: 34.2284, lng: -92.0032 },
-    "searcy": { lat: 35.2506, lng: -91.7362 },
-    "batesville": { lat: 35.7698, lng: -91.6409 },
-    "jonesboro": { lat: 35.8423, lng: -90.7043 },
-    "fort smith": { lat: 35.3859, lng: -94.3985 },
-    "fayetteville": { lat: 36.0626, lng: -94.1574 },
-    "springdale": { lat: 36.1867, lng: -94.1288 },
-    "rogers": { lat: 36.3320, lng: -94.1185 },
-    "bentonville": { lat: 36.3729, lng: -94.2088 },
-    "russellville": { lat: 35.2784, lng: -93.1338 }
+  const fallbackPlaces = {
+    "lr": { lat: 34.7465, lng: -92.2896 },
+    "nlr": { lat: 34.7695, lng: -92.2671 },
+    "wlr": { lat: 34.7726, lng: -92.3993 },
+    "west little rock": { lat: 34.7726, lng: -92.3993 },
+    "shinall mountain": { lat: 34.8063, lng: -92.4932 },
+    "shinall mtn": { lat: 34.8063, lng: -92.4932 }
   };
 
-  return places[key] || null;
+  return fallbackPlaces[key] || null;
 }
 setupDashboard();
 setupSessionPage();
