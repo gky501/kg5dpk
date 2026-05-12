@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Active Net Session | BACN</title>
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
   <script src="../assets/js/main.js" defer></script>
   <script src="../assets/js/auth.js" defer></script>
   <script src="../assets/js/members.js" defer></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="../assets/js/netlogger.js" defer></script>
 </head>
 
@@ -43,6 +43,7 @@
       </div>
 
       <div class="session-actions">
+        <button class="button button-secondary" id="scriptViewerBtn" type="button">Script Viewer</button>
         <button class="button button-secondary" id="clearSessionBtn" type="button">Clear Local Log</button>
         <a href="export.html" class="button">Export Log</a>
       </div>
@@ -124,7 +125,129 @@
           </table>
         </div>
       </article>
+      <article class="logger-panel map-panel">
+        <div class="panel-title-row">
+          <div>
+            <h2>Check-In Map</h2>
+            <p>Mapped by city/community when a location is recognized.</p>
+          </div>
+        </div>
+      
+        <div id="checkinMap" class="checkin-map"></div>
+      </article>
     </section>
   </main>
+  <div class="modal-backdrop" id="scriptModal" hidden>
+  <div class="modal-card">
+    <div class="panel-title-row">
+      <h2>BACN Club Net Script</h2>
+      <button class="small-button" id="closeScriptBtn" type="button">Close</button>
+    </div>
+
+    <div class="script-viewer">
+      <h3>Opening / Preamble</h3>
+
+      <p>
+        Calling all amateur radio operators. This is <strong>__________</strong>, Net Control for the BACN Club Net,
+        operating on the KG5DPK repeater located on Shinall Mountain in West Little Rock.
+      </p>
+
+      <p>
+        The repeater operates on <strong>443.475 MHz</strong>, with a positive offset and a tone of
+        <strong>156.7</strong>.
+      </p>
+
+      <p>
+        The Backup Auxiliary Communications Network, or BACN Club, was created by Metropolitan EMS employees
+        as a place for licensed amateur radio operators with the disaster communications team to share ideas,
+        sharpen skills, and connect with other amateur radio operators in the community.
+      </p>
+
+      <p>
+        The BACN Net meets twice a month, on the <strong>first and second Mondays at 18:30 Central Time</strong>.
+        All licensed operators are welcome to check in. You do not have to be a club member.
+      </p>
+
+      <h3>Emergency Traffic</h3>
+
+      <p>
+        Before we begin check-ins and announcements, we will pause for emergency or priority traffic.
+        If you have emergency or priority traffic, please say,
+        <strong>“Break for emergency traffic”</strong>, and wait to be acknowledged.
+      </p>
+
+      <p>
+        If there is any emergency or priority traffic, please call Net Control now.
+      </p>
+
+      <p class="script-pause">[Pause for 5–10 seconds.]</p>
+
+      <h3>Short-Time / On-Duty Check-Ins</h3>
+
+      <p>
+        Next, we will call for any stations short on time, including those on duty, in transit,
+        or unable to stay for the entire net.
+      </p>
+
+      <p>
+        When checking in, please call Net Control first. After that, unkey your microphone and listen
+        for a second or two to make sure you are not doubling with another station. If you do not hear
+        another station, key up and give your call sign phonetically, along with your name, location,
+        and whether you have traffic for the net.
+      </p>
+
+      <p>
+        This practice helps minimize doubling and keeps the net running smoothly.
+      </p>
+
+      <p>
+        If there are any short-time or on-duty stations, please call now.
+      </p>
+
+      <h3>General Check-Ins</h3>
+
+      <p>
+        We will now begin general check-ins. If there are any general check-ins, please call Net Control now.
+      </p>
+
+      <h3>Announcements</h3>
+
+      <p>
+        With no more check-ins at this time, we will move to announcements.
+      </p>
+
+      <p class="script-note">
+        [Read announcements, then return for a second round of check-ins.]
+      </p>
+
+      <h3>Final Round of Check-Ins</h3>
+
+      <p>
+        We are now taking the final round of check-ins. Please call Net Control, then pause briefly
+        to make sure there is no doubling.
+      </p>
+
+      <p>
+        If you would like to check in, please call Net Control now.
+      </p>
+
+      <h3>Closing</h3>
+
+      <p>
+        Hearing no further check-ins or traffic, we will close the BACN Club Net at this time
+        and return the repeater to regular amateur use.
+      </p>
+
+      <p>
+        Thank you to everyone who checked in, and we hope to hear you back here
+        <strong>__________</strong>.
+      </p>
+
+      <p>
+        This is <strong>__________</strong>, Net Control for the BACN Club Net, clear.
+      </p>
+    </div>
+  </div>
+</div>
 </body>
 </html>
