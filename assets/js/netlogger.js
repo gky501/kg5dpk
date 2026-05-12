@@ -573,7 +573,6 @@ function renderMapMarkers(checkins) {
       checkinStatus.className = "logger-status";
     }, 2500);
   }
-}
 
 function setupExportPage() {
   const exportText = document.getElementById("exportText");
