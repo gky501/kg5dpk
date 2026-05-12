@@ -1,1 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Net Logger Login | BACN</title>
 
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/auth.js" defer></script>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">BACN</span>
+        <span class="brand-text">Backup Auxiliary Communications Network</span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Open navigation">☰</button>
+
+      <nav class="site-nav" id="siteNav">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../nets.html">Nets</a>
+        <a href="../repeaters.html">Repeater</a>
+        <a href="../contact.html">Contact</a>
+        <a href="login.html" class="nav-cta active">Net Logger</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="logger-page">
+    <section class="logger-login-wrap">
+      <div class="login-card">
+        <div class="eyebrow">Controller Access</div>
+        <h1>BACN Net Logger</h1>
+        <p>
+          Sign in to open a net session, record check-ins, and export completed net logs.
+        </p>
+
+        <form id="loginForm" class="logger-form">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="controller@example.com" required />
+
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="••••••••" required />
+
+          <button class="button full-width" type="submit">Sign In</button>
+        </form>
+
+        <div id="loginStatus" class="logger-status" aria-live="polite"></div>
+
+        <p class="small-note">
+          Controller accounts are managed by BACN administrators.
+        </p>
+      </div>
+
+      <aside class="login-side-card">
+        <div class="signal-label">KG5DPK Repeater</div>
+        <div class="frequency">443.475</div>
+        <div class="frequency-unit">MHz</div>
+
+        <dl class="quick-specs">
+          <div>
+            <dt>Offset</dt>
+            <dd>+5.000 MHz</dd>
+          </div>
+          <div>
+            <dt>Tone</dt>
+            <dd>156.700</dd>
+          </div>
+          <div>
+            <dt>Location</dt>
+            <dd>Shinall Mtn WLR</dd>
+          </div>
+        </dl>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>
