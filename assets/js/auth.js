@@ -1,24 +1,22 @@
 const BACN_AUTH_KEY = "bacn_controller_logged_in";
 
-function getCurrentPage() {
-  return window.location.pathname.split("/").pop().toLowerCase();
-}
+const currentPath = window.location.pathname.toLowerCase();
+const currentPage = currentPath.split("/").pop();
 
-function isInsideNetlogger() {
-  return window.location.pathname.toLowerCase().includes("/netlogger/");
+function isNetloggerPage() {
+  return currentPath.includes("netlogger");
 }
 
 function isLoginPage() {
-  const page = getCurrentPage();
-  return page === "login.html" || page === "";
+  return currentPage === "login.html";
 }
 
 function isLoggedIn() {
   return localStorage.getItem(BACN_AUTH_KEY) === "true";
 }
 
-function requireLogin() {
-  if (!isInsideNetlogger()) return;
+function protectNetloggerPages() {
+  if (!isNetloggerPage()) return;
   if (isLoginPage()) return;
 
   if (!isLoggedIn()) {
@@ -35,36 +33,30 @@ function setupLoginForm() {
   loginForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-
-    const email = emailInput ? emailInput.value.trim() : "";
-    const password = passwordInput ? passwordInput.value.trim() : "";
+    const email = document.getElementById("email")?.value.trim();
+    const password = document.getElementById("password")?.value.trim();
 
     if (!email || !password) {
-      showLoginStatus("Enter your email and password.", "error");
+      showStatus("Enter your email and password.", "error");
       return;
     }
 
     localStorage.setItem(BACN_AUTH_KEY, "true");
     localStorage.setItem("bacn_controller_email", email);
 
-    showLoginStatus("Signed in. Opening dashboard...", "ok");
+    showStatus("Signed in. Opening dashboard...", "ok");
 
-    setTimeout(function () {
-      window.location.href = "dashboard.html";
-    }, 400);
+    window.location.href = "dashboard.html";
   });
 
-  function showLoginStatus(message, type) {
+  function showStatus(message, type) {
     if (!loginStatus) return;
-
     loginStatus.textContent = message;
     loginStatus.className = "logger-status " + type;
   }
 }
 
-function setupLogout() {
+function setupLogoutButton() {
   const logoutBtn = document.getElementById("logoutBtn");
 
   if (!logoutBtn) return;
@@ -76,6 +68,6 @@ function setupLogout() {
   });
 }
 
-requireLogin();
+protectNetloggerPages();
 setupLoginForm();
-setupLogout();
+setupLogoutButton();
