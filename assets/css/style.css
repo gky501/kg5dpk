@@ -895,7 +895,10 @@ a:hover {
 .checkin-map {
   display: block !important;
   height: 800px !important;
-  width: 100% !important;
+  aspect-ratio: 1 / 1;
+  height: auto !important;
+  max-height: 650px;
+  min-height: 420px;
   border-radius: 14px;
   overflow: hidden;
   margin-top: 1rem;
