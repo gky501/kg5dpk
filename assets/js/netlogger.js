@@ -218,7 +218,7 @@ function lookupAndFillCallsign() {
     if (checkins.length === 0) {
       checkinRows.innerHTML = `
         <tr>
-          <td colspan="8" class="empty-table">No check-ins logged yet.</td>
+          <td colspan="10" class="empty-table">No check-ins logged yet.</td>
         </tr>
       `;
       return;
@@ -230,6 +230,8 @@ function lookupAndFillCallsign() {
         <td>${escapeHtml(item.time)}</td>
         <td><strong>${escapeHtml(item.callsign)}</strong></td>
         <td>${escapeHtml(item.name)}</td>
+        <td>${escapeHtml(item.licenseType || "")}</td>
+        <td>${escapeHtml(item.membershipStatus || "Guest")}</td>
         <td>${escapeHtml(item.location)}</td>
         <td>${escapeHtml(item.traffic)}</td>
         <td>${escapeHtml(item.notes)}</td>
