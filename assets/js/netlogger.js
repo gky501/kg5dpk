@@ -369,32 +369,50 @@ function setupSessionPage() {
   }
 
   function renderMapMarkers(checkins) {
-    if (!map || !markerLayer) return;
+  if (!map || !markerLayer) return;
 
-    markerLayer.clearLayers();
+  markerLayer.clearLayers();
 
-    const mapped = checkins.filter((item) => item.lat && item.lng);
+  const mapped = checkins
+    .map((item) => {
+      if (item.lat && item.lng) return item;
 
-    mapped.forEach((item) => {
-      L.marker([item.lat, item.lng])
-        .bindPopup(`
-          <strong>${escapeHtml(item.callsign)}</strong><br>
-          ${escapeHtml(item.name || "")}<br>
-          ${escapeHtml(item.membershipStatus || "Guest")}<br>
-          ${escapeHtml(item.location || "")}
-        `)
-        .addTo(markerLayer);
+      const coords = getArkansasCoordinates(item.location);
+
+      if (!coords) return item;
+
+      return {
+        ...item,
+        lat: coords.lat,
+        lng: coords.lng
+      };
+    })
+    .filter((item) => item.lat && item.lng);
+
+  mapped.forEach((item) => {
+    L.marker([item.lat, item.lng])
+      .bindPopup(`
+        <strong>${escapeHtml(item.callsign)}</strong><br>
+        ${escapeHtml(item.name || "")}<br>
+        ${escapeHtml(item.membershipStatus || "Guest")}<br>
+        ${escapeHtml(item.location || "")}
+      `)
+      .addTo(markerLayer);
+  });
+
+  if (mapped.length > 0) {
+    const bounds = L.latLngBounds(mapped.map((item) => [item.lat, item.lng]));
+
+    map.fitBounds(bounds, {
+      padding: [30, 30],
+      maxZoom: 10
     });
-
-    if (mapped.length > 0) {
-      const bounds = L.latLngBounds(mapped.map((item) => [item.lat, item.lng]));
-
-      map.fitBounds(bounds, {
-        padding: [30, 30],
-        maxZoom: 10
-      });
-    }
   }
+
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 200);
+}
 
   function showStatus(message, type) {
     if (!checkinStatus) return;
