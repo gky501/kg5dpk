@@ -1,1 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Net Logger Dashboard | BACN</title>
 
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/auth.js" defer></script>
+  <script src="../assets/js/netlogger.js" defer></script>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">BACN</span>
+        <span class="brand-text">Backup Auxiliary Communications Network</span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Open navigation">☰</button>
+
+      <nav class="site-nav" id="siteNav">
+        <a href="../index.html">Home</a>
+        <a href="../nets.html">Nets</a>
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="export.html">Export</a>
+        <button class="nav-logout" id="logoutBtn" type="button">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="logger-main">
+    <section class="container logger-header">
+      <div>
+        <div class="eyebrow">BACN Net Logger</div>
+        <h1>Controller Dashboard</h1>
+        <p>
+          Start a new net session or review recent activity.
+        </p>
+      </div>
+
+      <a href="session.html" class="button">Start New Net</a>
+    </section>
+
+    <section class="container logger-grid">
+      <article class="logger-panel">
+        <h2>Start Net Session</h2>
+        <p>
+          Open a new BACN net session on the KG5DPK repeater.
+        </p>
+
+        <form id="newNetForm" class="logger-form compact">
+          <label for="netName">Net Name</label>
+          <input id="netName" name="netName" type="text" value="BACN Net" />
+
+          <label for="controllerCallsign">Net Control Callsign</label>
+          <input id="controllerCallsign" name="controllerCallsign" type="text" placeholder="Example: KG5DPK" />
+
+          <label for="netDate">Date</label>
+          <input id="netDate" name="netDate" type="date" />
+
+          <button class="button full-width" type="submit">Open Session</button>
+        </form>
+      </article>
+
+      <article class="logger-panel">
+        <h2>Repeater</h2>
+
+        <dl class="detail-list">
+          <div>
+            <dt>Callsign</dt>
+            <dd>KG5DPK</dd>
+          </div>
+          <div>
+            <dt>Frequency</dt>
+            <dd>443.475 MHz</dd>
+          </div>
+          <div>
+            <dt>Offset</dt>
+            <dd>+5.000 MHz</dd>
+          </div>
+          <div>
+            <dt>Tone</dt>
+            <dd>156.700</dd>
+          </div>
+          <div>
+            <dt>Location</dt>
+            <dd>Shinall Mtn WLR</dd>
+          </div>
+        </dl>
+      </article>
+
+      <article class="logger-panel wide">
+        <div class="panel-title-row">
+          <h2>Recent Net Sessions</h2>
+          <a href="export.html">View exports</a>
+        </div>
+
+        <div class="session-list" id="recentSessions">
+          <div class="empty-state">
+            No saved net sessions yet. Start a new session to begin logging check-ins.
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
