@@ -5,15 +5,15 @@ async function loadBacnMembers() {
     const response = await fetch("../assets/data/MemberDirectory.csv");
 
     if (!response.ok) {
-      throw new Error("Could not load member directory.");
+      throw new Error("Could not load MemberDirectory.csv");
     }
 
     const csvText = await response.text();
     BACN_MEMBERS = parseMemberCsv(csvText);
 
-    console.log(`Loaded ${BACN_MEMBERS.length} BACN members.`);
+    console.log("BACN members loaded:", BACN_MEMBERS.length);
   } catch (error) {
-    console.error("BACN member load failed:", error);
+    console.error("BACN member directory failed to load:", error);
     BACN_MEMBERS = [];
   }
 }
