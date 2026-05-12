@@ -1,26 +1,33 @@
 const BACN_AUTH_KEY = "bacn_controller_logged_in";
 
-const currentPath = window.location.pathname.toLowerCase();
-const currentPage = currentPath.split("/").pop();
+const path = window.location.pathname.toLowerCase();
+const file = path.split("/").pop();
 
-function isNetloggerPage() {
-  return currentPath.includes("netlogger");
-}
-
-function isLoginPage() {
-  return currentPage === "login.html";
-}
+console.log("BACN auth loaded:", { path, file });
 
 function isLoggedIn() {
   return localStorage.getItem(BACN_AUTH_KEY) === "true";
 }
 
-function protectNetloggerPages() {
+function isLoginPage() {
+  return file === "login.html";
+}
+
+function isNetloggerPage() {
+  return path.includes("/netlogger/");
+}
+
+function setupPageProtection() {
+  // Do nothing outside netlogger
   if (!isNetloggerPage()) return;
+
+  // Never redirect from login page
   if (isLoginPage()) return;
 
+  // Protect dashboard/session/export
   if (!isLoggedIn()) {
-    window.location.href = "login.html";
+    console.log("Not logged in. Redirecting to login.");
+    window.location.replace("login.html");
   }
 }
 
@@ -33,8 +40,11 @@ function setupLoginForm() {
   loginForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    const email = document.getElementById("email")?.value.trim();
-    const password = document.getElementById("password")?.value.trim();
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
 
     if (!email || !password) {
       showStatus("Enter your email and password.", "error");
@@ -68,6 +78,6 @@ function setupLogoutButton() {
   });
 }
 
-protectNetloggerPages();
+setupPageProtection();
 setupLoginForm();
 setupLogoutButton();
