@@ -8,30 +8,37 @@ async function loadBacnMembers() {
       throw new Error("Could not load MemberDirectory.csv");
     }
 
-    const csvText = await response.text();
-    BACN_MEMBERS = parseMemberCsv(csvText);
+    const text = await response.text();
+    BACN_MEMBERS = parseMemberDirectory(text);
 
     console.log("BACN members loaded:", BACN_MEMBERS.length);
+    console.table(BACN_MEMBERS);
   } catch (error) {
     console.error("BACN member directory failed to load:", error);
     BACN_MEMBERS = [];
   }
 }
 
-function parseMemberCsv(csvText) {
-  const rows = parseCsv(csvText);
+function parseMemberDirectory(text) {
+  const firstLine = text.split(/\r?\n/)[0] || "";
+  const delimiter = firstLine.includes("\t") ? "\t" : ",";
+
+  const rows = parseDelimitedText(text, delimiter);
 
   if (rows.length < 2) return [];
 
-  const headers = rows[0].map((header) => header.trim());
+  const headers = rows[0].map((header) =>
+    cleanValue(header).replace(/^\uFEFF/, "")
+  );
 
-  return rows.slice(1)
-    .filter((row) => row.some((cell) => String(cell || "").trim() !== ""))
+  return rows
+    .slice(1)
+    .filter((row) => row.some((cell) => cleanValue(cell) !== ""))
     .map((row) => {
       const item = {};
 
       headers.forEach((header, index) => {
-        item[header] = row[index] || "";
+        item[header] = cleanValue(row[index]);
       });
 
       return {
@@ -47,7 +54,7 @@ function parseMemberCsv(csvText) {
     });
 }
 
-function parseCsv(text) {
+function parseDelimitedText(text, delimiter) {
   const rows = [];
   let row = [];
   let value = "";
@@ -62,7 +69,7 @@ function parseCsv(text) {
       i++;
     } else if (char === '"') {
       insideQuotes = !insideQuotes;
-    } else if (char === "," && !insideQuotes) {
+    } else if (char === delimiter && !insideQuotes) {
       row.push(value);
       value = "";
     } else if ((char === "\n" || char === "\r") && !insideQuotes) {
@@ -89,15 +96,28 @@ function parseCsv(text) {
   return rows;
 }
 
+function cleanValue(value) {
+  return String(value ?? "")
+    .replace(/^\uFEFF/, "")
+    .trim();
+}
+
+function normalizeCallsign(value) {
+  return String(value || "")
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "");
+}
+
 function findBacnMemberByCallsign(callsign) {
-  const search = String(callsign || "").trim().toUpperCase();
+  const search = normalizeCallsign(callsign);
 
   if (!search) return null;
 
   return BACN_MEMBERS.find((member) => {
-    const ham = String(member.ham || "").trim().toUpperCase();
-    const alias = String(member.alias || "").trim().toUpperCase();
-    const gmrs = String(member.gmrs || "").trim().toUpperCase();
+    const ham = normalizeCallsign(member.ham);
+    const alias = normalizeCallsign(member.alias);
+    const gmrs = normalizeCallsign(member.gmrs);
 
     return ham === search || alias === search || gmrs === search;
   }) || null;
