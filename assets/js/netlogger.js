@@ -1,5 +1,11 @@
 const BACN_CHECKINS_KEY = "bacn_current_checkins";
 const BACN_SESSION_KEY = "bacn_current_session";
+const BACN_REPEATER = {
+  name: "KG5DPK Repeater",
+  lat: 34.799754984325006,
+  lng: -92.5003754567644,
+  location: "Shinall Mountain, West Little Rock"
+};
 
 function getTodayString() {
   return new Date().toISOString().slice(0, 10);
@@ -345,33 +351,55 @@ function setupSessionPage() {
   }
 
   function setupMap() {
-    const mapEl = document.getElementById("checkinMap");
+  const mapEl = document.getElementById("checkinMap");
 
-    if (!mapEl || typeof L === "undefined") {
-      console.warn("Map not loaded. Missing #checkinMap or Leaflet.");
-      return;
-    }
-
-    map = L.map("checkinMap", {
-      scrollWheelZoom: false
-    }).setView([34.7465, -92.2896], 7);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: "&copy; OpenStreetMap contributors"
-    }).addTo(map);
-
-    markerLayer = L.layerGroup().addTo(map);
-
-    setTimeout(() => {
-      map.invalidateSize();
-    }, 300);
+  if (!mapEl || typeof L === "undefined") {
+    console.warn("Map not loaded. Missing #checkinMap or Leaflet.");
+    return;
   }
+
+  map = L.map("checkinMap", {
+    scrollWheelZoom: true,
+    zoomControl: true
+  }).setView([34.9, -92.7], 6);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 18,
+    attribution: "&copy; OpenStreetMap contributors"
+  }).addTo(map);
+
+  markerLayer = L.layerGroup().addTo(map);
+
+  setTimeout(() => {
+    map.invalidateSize();
+  }, 300);
+}
 
   function renderMapMarkers(checkins) {
   if (!map || !markerLayer) return;
 
   markerLayer.clearLayers();
+
+  const boundsPoints = [];
+  const stationPoints = [];
+
+  // Always include repeater in bounds
+  boundsPoints.push([BACN_REPEATER.lat, BACN_REPEATER.lng]);
+
+  // Repeater marker
+  const repeaterMarker = L.circleMarker([BACN_REPEATER.lat, BACN_REPEATER.lng], {
+    radius: 10,
+    color: "#f47b20",
+    weight: 3,
+    fillColor: "#f47b20",
+    fillOpacity: 0.95
+  }).addTo(markerLayer);
+
+  repeaterMarker.bindPopup(`
+    <strong>${BACN_REPEATER.name}</strong><br>
+    ${BACN_REPEATER.location}<br>
+    443.475 MHz • +5.000 • 156.7
+  `);
 
   const mapped = checkins
     .map((item) => {
@@ -379,7 +407,7 @@ function setupSessionPage() {
 
       const coords = getArkansasCoordinates(item.location);
 
-      if (!coords) return item;
+      if (!coords) return null;
 
       return {
         ...item,
@@ -387,31 +415,61 @@ function setupSessionPage() {
         lng: coords.lng
       };
     })
-    .filter((item) => item.lat && item.lng);
+    .filter(Boolean);
 
   mapped.forEach((item) => {
-    L.marker([item.lat, item.lng])
-      .bindPopup(`
-        <strong>${escapeHtml(item.callsign)}</strong><br>
-        ${escapeHtml(item.name || "")}<br>
-        ${escapeHtml(item.membershipStatus || "Guest")}<br>
-        ${escapeHtml(item.location || "")}
-      `)
-      .addTo(markerLayer);
+    const stationLatLng = [item.lat, item.lng];
+    boundsPoints.push(stationLatLng);
+    stationPoints.push(stationLatLng);
+
+    // Line from station to repeater
+    L.polyline(
+      [
+        [BACN_REPEATER.lat, BACN_REPEATER.lng],
+        [item.lat, item.lng]
+      ],
+      {
+        color: "#f47b20",
+        weight: 2,
+        opacity: 0.6,
+        dashArray: "6, 6"
+      }
+    ).addTo(markerLayer);
+
+    // Station marker
+    const stationMarker = L.circleMarker(stationLatLng, {
+      radius: 8,
+      color: "#ffffff",
+      weight: 2,
+      fillColor: "#005bea",
+      fillOpacity: 0.9
+    }).addTo(markerLayer);
+
+    stationMarker.bindPopup(`
+      <strong>${escapeHtml(item.callsign)}</strong><br>
+      ${escapeHtml(item.name || "")}<br>
+      ${escapeHtml(item.licenseType || "")}
+      ${item.membershipStatus ? " • " + escapeHtml(item.membershipStatus) : ""}<br>
+      ${escapeHtml(item.location || "")}<br>
+      ${escapeHtml(item.traffic || "")}
+    `);
   });
 
-  if (mapped.length > 0) {
-    const bounds = L.latLngBounds(mapped.map((item) => [item.lat, item.lng]));
+  // Auto-fit map
+  if (boundsPoints.length > 1) {
+    const bounds = L.latLngBounds(boundsPoints);
 
     map.fitBounds(bounds, {
-      padding: [30, 30],
-      maxZoom: 10
+      padding: [40, 40],
+      maxZoom: 8
     });
+  } else {
+    map.setView([BACN_REPEATER.lat, BACN_REPEATER.lng], 8);
   }
 
   setTimeout(() => {
     map.invalidateSize();
-  }, 200);
+  }, 150);
 }
 
   function showStatus(message, type) {
