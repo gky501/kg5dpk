@@ -1,1 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Export Net Log | BACN</title>
 
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <script src="../assets/js/main.js" defer></script>
+  <script src="../assets/js/auth.js" defer></script>
+  <script src="../assets/js/netlogger.js" defer></script>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">BACN</span>
+        <span class="brand-text">Backup Auxiliary Communications Network</span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Open navigation">☰</button>
+
+      <nav class="site-nav" id="siteNav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="session.html">Active Session</a>
+        <a href="export.html" class="active">Export</a>
+        <button class="nav-logout" id="logoutBtn" type="button">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="logger-main">
+    <section class="container logger-header">
+      <div>
+        <div class="eyebrow">Export</div>
+        <h1>Export Net Log</h1>
+        <p>
+          Copy or download the current locally saved BACN net check-ins.
+        </p>
+      </div>
+
+      <div class="session-actions">
+        <button class="button button-secondary" id="copyExportBtn" type="button">Copy Log</button>
+        <button class="button" id="downloadCsvBtn" type="button">Download CSV</button>
+      </div>
+    </section>
+
+    <section class="container">
+      <article class="logger-panel">
+        <div class="panel-title-row">
+          <h2>Current Log</h2>
+          <p><span id="exportCount">0</span> check-ins</p>
+        </div>
+
+        <textarea id="exportText" class="export-box" readonly></textarea>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
