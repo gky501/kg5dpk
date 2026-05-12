@@ -96,6 +96,7 @@ function setupSessionPage() {
   const clearSessionBtn = document.getElementById("clearSessionBtn");
   const copyLogBtn = document.getElementById("copyLogBtn");
   const sessionMeta = document.getElementById("sessionMeta");
+  const lookupCallsignBtn = document.getElementById("lookupCallsignBtn");
 
   if (!checkinForm) return;
 
@@ -110,7 +111,49 @@ function setupSessionPage() {
   }
 
   renderCheckins();
+  if (lookupCallsignBtn) {
+  lookupCallsignBtn.addEventListener("click", () => {
+    lookupAndFillCallsign();
+  });
+}
 
+const callsignInput = document.getElementById("callsign");
+
+if (callsignInput) {
+  callsignInput.addEventListener("blur", () => {
+    lookupAndFillCallsign();
+  });
+}
+
+function lookupAndFillCallsign() {
+  const callsign = document.getElementById("callsign").value.trim().toUpperCase();
+
+  if (!callsign) return;
+
+  if (!Array.isArray(BACN_MEMBERS) || BACN_MEMBERS.length === 0) {
+    showStatus("Member directory is still loading. Try again in a second.", "error");
+    return;
+  }
+
+  const member = typeof findBacnMemberByCallsign === "function"
+    ? findBacnMemberByCallsign(callsign)
+    : null;
+
+  const nameInput = document.getElementById("name");
+  const licenseInput = document.getElementById("licenseType");
+  const statusInput = document.getElementById("membershipStatus");
+
+  if (member) {
+    nameInput.value = member.name || "";
+    licenseInput.value = member.licenseType || "";
+    statusInput.value = "Club Member";
+
+    showStatus(`${callsign} found: ${member.name} — ${member.licenseType} — Club Member`, "ok");
+  } else {
+    statusInput.value = "Guest";
+    showStatus(`${callsign} not found in BACN roster. Marked as Guest.`, "error");
+  }
+}
   checkinForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -121,6 +164,8 @@ function setupSessionPage() {
       time: getTimeString(),
       callsign: document.getElementById("callsign").value.trim().toUpperCase(),
       name: document.getElementById("name").value.trim(),
+      licenseType: document.getElementById("licenseType").value.trim(),
+      membershipStatus: document.getElementById("membershipStatus").value,
       location: document.getElementById("location").value.trim(),
       traffic: document.getElementById("traffic").value,
       notes: document.getElementById("notes").value.trim()
